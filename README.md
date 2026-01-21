@@ -961,7 +961,21 @@ python3 tools/svg_to_pptx.py <项目路径>
 python3 tools/svg_to_pptx.py <项目路径> -s final -o output.pptx
 ```
 
-**特点**：SVG 以原生矢量格式嵌入，保持可编辑性，需要 PowerPoint 2016+ 查看。
+**特点**：每页以 SVG 图片方式嵌入（矢量显示），适合在 PowerPoint 2016+ 中查看。
+
+### 生成全可编辑 PPTX（WPS 友好）
+
+如果你需要在 WPS 中对形状和文字逐个编辑（不是整页图片），可在导出后运行：
+
+```bash
+python3 tools/svg_full_editable_to_pptx.py output.pptx -o editable.pptx
+```
+
+如果只需要文字可编辑，且希望视觉尽量贴近原稿，可使用：
+
+```bash
+python3 tools/svg_text_overlay_to_pptx.py output.pptx -o editable_text.pptx
+```
 
 ### 错误消息助手 (`error_helper.py`)
 

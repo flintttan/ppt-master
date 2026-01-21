@@ -98,6 +98,12 @@ SVG 文件保存到 svg_final/
           ▼
 【导出 PPTX】← ← ← ← ← 自动执行
   python3 tools/svg_to_pptx.py
+
+（可选）如需 WPS 中形状+文字全可编辑（不是整页图片）：
+  python3 tools/svg_full_editable_to_pptx.py <output.pptx> -o <editable.pptx>
+
+（可选）如只需文字可编辑（背景渲染 + 文本叠加）：
+  python3 tools/svg_text_overlay_to_pptx.py <output.pptx> -o <editable_text.pptx>
           │
           ▼
 Optimizer_CRAP (可选优化)

@@ -978,7 +978,7 @@ python3 tools/finalize_svg.py <project_path>
 
 ### SVG to PPTX Tool (`svg_to_pptx.py`)
 
-Batch convert SVG files to PowerPoint presentations (native SVG vector embedding):
+Batch convert SVG files to a PowerPoint deck (native SVG picture embedding):
 
 ```bash
 # Use final version (recommended)
@@ -991,7 +991,21 @@ python3 tools/svg_to_pptx.py <project_path>
 python3 tools/svg_to_pptx.py <project_path> -s final -o output.pptx
 ```
 
-**Features**: SVG embedded as native vector format, maintains editability, requires PowerPoint 2016+ to view.
+**Note**: Each slide is a single SVG picture. This is great for viewing in PowerPoint 2016+, but not ideal if you need to edit individual shapes in WPS.
+
+### Export a fully editable PPTX (WPS friendly)
+
+If you need to edit shapes and text as native PPT objects (not a full-slide picture):
+
+```bash
+python3 tools/svg_full_editable_to_pptx.py output.pptx -o editable.pptx
+```
+
+If you only need editable text and want maximum visual fidelity:
+
+```bash
+python3 tools/svg_text_overlay_to_pptx.py output.pptx -o editable_text.pptx
+```
 
 ### Error Message Helper (`error_helper.py`)
 

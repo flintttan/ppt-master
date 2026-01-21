@@ -79,9 +79,11 @@
   - 优化代码结构
   - 生成最终版本到 `svg_final/`
 - [ ] AI 自动导出 PPTX：`python3 tools/svg_to_pptx.py <项目路径> -s final`
-  - 生成可用的 PowerPoint 文件
+  - 生成可用的 PowerPoint 文件（每页为 SVG 图片）
   - 自动嵌入演讲备注（如有）
-- [ ] 在 PowerPoint 中预览最终效果
+- [ ] （可选）如需 WPS 中“形状+文字全可编辑”（不是整页图片）：`python3 tools/svg_full_editable_to_pptx.py output.pptx -o editable.pptx`
+- [ ] （可选）如只需文字可编辑（背景渲染 + 文本叠加）：`python3 tools/svg_text_overlay_to_pptx.py output.pptx -o editable_text.pptx`
+- [ ] 在 PowerPoint/WPS 中预览最终效果
 - [ ] 检查所有页面的一致性
 - [ ] 添加项目 README 文档（可选）
 - [ ] 备份重要文件（可选）
@@ -443,10 +445,16 @@ python3 tools/svg_to_pptx.py <项目路径> -s output      # svg_output（原始
 python3 tools/svg_to_pptx.py <项目路径> -s final       # svg_final（推荐）
 
 # 指定输出文件
-python3 tools/svg_to_pptx.py <项目路径> -o presentation.pptx
+python3 tools/svg_to_pptx.py <项目路径> -o output.pptx
+
+# 如需 WPS 中全可编辑（形状+文字）：
+python3 tools/svg_full_editable_to_pptx.py output.pptx -o editable.pptx
+
+# 如只需文字可编辑（背景渲染 + 文本叠加）：
+python3 tools/svg_text_overlay_to_pptx.py output.pptx -o editable_text.pptx
 ```
 
-**特点**：SVG 以原生矢量格式嵌入，需要 PowerPoint 2016+ 查看。
+**特点**：`output.pptx` 每页为 SVG 图片（矢量显示），适合 PowerPoint 2016+ 查看；如需在 WPS 中逐个编辑元素，请使用上面的可编辑导出工具。
 
 ---
 

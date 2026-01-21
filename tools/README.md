@@ -37,6 +37,8 @@ graph TB
     
     subgraph Export["📤 导出"]
         D1[svg_to_pptx.py]
+        D2[svg_full_editable_to_pptx.py]
+        D3[svg_text_overlay_to_pptx.py]
     end
     
     subgraph Quality["🔍 质量检查"]
@@ -55,7 +57,9 @@ graph TB
     A2 --> B1
     B1 -->|svg_output/| C0
     C0 -->|svg_final/| D1
-    D1 -->|.pptx| Output[📊 PowerPoint]
+    D1 -->|output.pptx| D2
+    D1 -->|output.pptx| D3
+    D2 -->|editable.pptx| Output[📊 PowerPoint/WPS]
 ```
 
 ### 核心工作流
@@ -71,7 +75,11 @@ graph TB
                     ↓
               svg_final/
                     ↓
-              [svg_to_pptx] → output.pptx
+              [svg_to_pptx] → output.pptx（每页为 SVG 图片）
+                    ↓
+   [svg_full_editable_to_pptx] → editable.pptx（形状+文字全可编辑，WPS 友好）
+        或
+   [svg_text_overlay_to_pptx] → editable_text.pptx（仅文字可编辑）
 ```
 
 ### 工具分类快速索引
@@ -87,7 +95,7 @@ graph TB
 | ↳ 子工具 | `embed_images.py` | Base64 嵌入图片 |
 | ↳ 子工具 | `flatten_tspan.py` | 文本扁平化 |
 | ↳ 子工具 | `svg_rect_to_path.py` | 圆角矩形转 Path |
-| **导出** | `svg_to_pptx.py` | SVG 转 PowerPoint |
+| **导出** | `svg_to_pptx.py`, `svg_full_editable_to_pptx.py`, `svg_text_overlay_to_pptx.py` | SVG/PPTX 导出 PowerPoint |
 | **质量检查** | `svg_quality_checker.py`, `batch_validate.py` | 验证 SVG 规范 |
 | **辅助** | `config.py`, `analyze_images.py`, `rotate_images.py` | 配置和图片处理 |
 
@@ -627,6 +635,54 @@ pip install python-pptx
 - 文件体积比 PNG 方案小很多
 - 切换效果默认关闭，需要用户显式启用
 - 演讲备注默认开启，使用 `--no-notes` 禁用
+
+---
+
+### 8.1 svg_full_editable_to_pptx.py — 输出全可编辑 PPTX（形状 + 文字）
+
+将“每页为 SVG 图片”的 PPTX 重新转换为：每个元素都是 PPT 形状/文本框，便于在 WPS 中直接编辑（改色/改线/移动/改字）。
+
+**用法**:
+
+```bash
+# 先导出 output.pptx（每页为 SVG 图片）
+python3 tools/svg_to_pptx.py <项目路径> -s final -o output.pptx
+
+# 再转换为全可编辑 PPTX
+python3 tools/svg_full_editable_to_pptx.py output.pptx -o editable.pptx
+```
+
+**依赖**:
+
+```bash
+pip install python-pptx
+```
+
+**限制**:
+
+- 曲线/弧线/圆角 Path 会转成折线自由形状（仍可编辑），可能存在轻微视觉差异
+- 透明度/渐变在形状层面会做近似处理（保证可编辑优先）
+
+---
+
+### 8.2 svg_text_overlay_to_pptx.py — 文字可编辑（背景渲染 + 文本叠加）
+
+将每页 SVG 渲染为背景图（去掉文字），再把 SVG 的 `<text>` 还原为 PPT 文本框。适合“只需要改字”，并且希望视觉尽量贴近原稿的场景。
+
+**用法**:
+
+```bash
+python3 tools/svg_text_overlay_to_pptx.py output.pptx -o editable_text.pptx
+```
+
+**依赖**:
+
+```bash
+pip install python-pptx
+
+# 需要 rsvg-convert（librsvg）用于渲染 SVG
+# macOS: brew install librsvg
+```
 
 ---
 
