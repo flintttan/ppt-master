@@ -61,7 +61,13 @@ SVG 文件 (svg_output/)
     ↓
 后处理工具 (推荐，用户自行调用)
     ├── finalize_svg.py → svg_final/ (嵌入图标 + 修复图片宽高比 + 嵌入图片 + 文本扁平化 + 圆角转Path)
-    └── svg_to_pptx.py → output.pptx (导出 PowerPoint)
+    └── svg_to_pptx.py → output.pptx (每页为 SVG 图片)
+
+可选：如需在 WPS 中对形状和文字逐个编辑（不是整页图片）
+    ├── svg_full_editable_to_pptx.py output.pptx -o editable.pptx
+
+可选：如只需文字可编辑（背景渲染 + 文本叠加）
+    └── svg_text_overlay_to_pptx.py output.pptx -o editable_text.pptx
 ```
 
 > **注意**:
